@@ -1,25 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import { Flex, Image } from "@chakra-ui/react";
+import Form from "./components/Form";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Flex justifyContent="center" alignItems="center" minHeight="100vh">
+      <Image src="http://she1k.com/wp-content/uploads/2021/04/wavescan-logo.png" position="absolute" top="-7" left="5" width="150px" height="150px" />
+      <Form />
+    </Flex>
   );
 }
 
 export default App;
+
