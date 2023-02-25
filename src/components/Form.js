@@ -82,7 +82,7 @@ export default function Form() {
       .then((response) => {
         console.log(response.status)
         if (response.ok) {
-          alert("Form submitted successfully!");
+          // alert("Form submitted successfully!");
           setFormSuccess(true);
         } else {
           throw new Error("Failed to submit form");
