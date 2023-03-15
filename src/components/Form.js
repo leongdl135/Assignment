@@ -8,18 +8,50 @@ import {
   Stack,
   Button,
   Select,
-  Center
+  Center,
+  FormErrorMessage
 } from "@chakra-ui/react";
 import { useState } from "react";
 import ScannerDetails from "./ScannerDetails";
+import { isValidDimension, isValidName, isValidFrequency } from "../utils/validation";
 
 export default function Form() {
   const [projectName, setProjectName] = useState("");
-  const [scanningMode, setScanningMode] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [scanningMode, setScanningMode] = useState("GANTRY");
   const [scanDimensionsX, setScanDimensionsX] = useState(1);
+  const [scanXError, setScanXError] = useState("")
   const [scanDimensionsY, setScanDimensionsY] = useState(1);
-  const [scannerFrequency, setScannerFrequency] = useState(1);
+  const [scanYError, setScanYError] = useState("")
+  const [scannerFrequency, setScannerFrequency] = useState(100);
+  const [FrequencyError, setFrequencyError] = useState("")
   const [formSuccess, setFormSuccess] = useState(false);
+
+
+  const handleNameChange = (event) => {
+    const input = event.target.value;
+    setProjectName(input);
+    setNameError(isValidName(input))
+  }
+
+  const handleDimensionXChange = (event) => {
+    const input = event.target.value;
+    setScanDimensionsX(input);
+    setScanXError(isValidDimension(input))
+  }
+
+  const handleDimensionYChange = (event) => {
+    const input = event.target.value;
+    setScanDimensionsY(input);
+    setScanYError(isValidDimension(input))
+  }
+
+  const handleFrequencyChange = (event) => {
+    const input = event.target.value;
+    setScannerFrequency(input);
+    setFrequencyError(isValidFrequency(input));
+    
+  }
 
   function checkDecimal(num) {
     return /^[0-9]+(\.[0-9]{0,1})?$/.test(num);
@@ -107,19 +139,21 @@ export default function Form() {
           boxShadow={"lg"}
           p={8}
         >
+        <form onSubmit={handleSubmit}>
           <Stack spacing={4}>
-            <FormControl id="name">
+          
+            <FormControl id="name" isRequired isInvalid={nameError}>  
               <FormLabel>Project Name</FormLabel>
               <Input
                 type="text"
                 value={projectName}
-                onChange={(event) => setProjectName(event.target.value)}
+                onChange={handleNameChange}
               />
+              <FormErrorMessage>{nameError}</FormErrorMessage>
             </FormControl>
             <FormControl id="mode">
               <FormLabel>Scanning Mode</FormLabel>
               <Select
-                placeholder="Select option"
                 value={scanningMode}
                 onChange={(event) => setScanningMode(event.target.value)}
               >
@@ -138,37 +172,44 @@ export default function Form() {
                   id="X"
                   isRequired
                   pattern="[0-9]+"
+                  isInvalid={scanXError}
                 >
                 <Input
                     type="number"
                     value={scanDimensionsX}
                     pattern="[0-9]"
-                    onChange={(e) => setScanDimensionsX(e.target.value)}
+                    onChange={handleDimensionXChange}
                   />
+                  <FormErrorMessage>{scanXError}</FormErrorMessage>
                 </FormControl>
               </HStack>
               <HStack>
                 <FormLabel>Y</FormLabel>
-                <FormControl id="Y">
+                <FormControl id="Y"
+                isInvalid={scanYError}>
                   <Input
                     type="number"
                     value={scanDimensionsY}
                     pattern="[0-9]"
-                    onChange={(e) => setScanDimensionsY(e.target.value)}
+                    onChange={handleDimensionYChange}
                   />
+                  <FormErrorMessage>{scanYError}</FormErrorMessage>
                 </FormControl>
               </HStack>
             </HStack>
-            <FormControl id="frequency">
+            <FormControl id="frequency"
+            isInvalid={FrequencyError}>
               <FormLabel>Scanner Frequency (Ghz)</FormLabel>
               <Input
                 type="number"
                 value={scannerFrequency}
-                onChange={(e) => setScannerFrequency(e.target.value)}
+                onChange={handleFrequencyChange}
               />
+              <FormErrorMessage>{FrequencyError}</FormErrorMessage>
             </FormControl>
             <Center>
               <Button
+                type="submit"
                 loadingText="Submitting"
                 size="lg"
                 bg={"blue.400"}
@@ -177,12 +218,13 @@ export default function Form() {
                   bg: "blue.500",
                 }}
                 width={0.8}
-                onClick={handleSubmit}
               >
                 Scan
               </Button>
               </Center>
+            
           </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>

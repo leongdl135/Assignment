@@ -18,11 +18,16 @@ export default function ScannerDetails() {
   useEffect(() => {
     fetch("https://wavescan-internship.saurabhmudgal.repl.co/success")
       .then((response) => response.json())
-      .then((data) => setScannerDetails(data));
+      .then((data) => {
+        setScannerDetails(data);
+        //console.log(data); 
+      });
   }, []);
+  
 
   return (
     <Box rounded={"lg"} boxShadow={"lg"} p={8} bg={"gray.50"}>
+    
       <Heading size="md">Scanners found: {scannerDetails.length}</Heading>
       <Box overflowX={"auto"}>
         <Table variant="simple">
@@ -36,16 +41,16 @@ export default function ScannerDetails() {
             </Tr>
           </Thead>
           <Tbody>
-            {scannerDetails.map((scanner) => (
-              <Tr key={scanner.scannerName}>
+            {scannerDetails.map((scanner, index) => (
+              <Tr key={index}>
                 <Td>{scanner.scannerName}</Td>
                 <Td>{scanner.ipAddress}</Td>
                 <Td>
                   <Center>{scanner.scannerSpeed + " m/s"}</Center>
                 </Td>
-                <Td>{scanner.isAvailable ? "Available" : "Engaged"}</Td>
+                <Td>{scanner.isAvailable === "true" ? "Available" : "Engaged"}</Td>
                 <Td>
-                  {scanner.isAvailable ? (
+                  {scanner.isAvailable === "true" ? (
                     <Button colorScheme="blue">Connect</Button>
                   ) : (
                     <Button colorScheme="gray">Connect</Button>
