@@ -61,7 +61,7 @@ export default function Form() {
     event.preventDefault();
     // Validate form fields
     if (
-      projectName.trim().length < 3
+      projectName.trim().length < 4
     ) {
       alert("Please enter a project name with at least 3 characters");
       setProjectName("");
@@ -106,8 +106,8 @@ export default function Form() {
       body: JSON.stringify({
         projectName,
         scanningMode,
-        scanDimensionsX,
-        scanDimensionsY,
+        scanDimensionsX: parseInt(scanDimensionsX),
+        scanDimensionsY: parseInt(scanDimensionsY),
         scannerFrequency: parseFloat(scannerFrequency),
       }),
     })
